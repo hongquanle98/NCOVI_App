@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">NCOVI</string>
+
+    <string name="xem_chi_tiet"><u>Xem chi tiết</u></string>
+    <string name="nguon_bo_y_te"><u>Nguồn: Bộ Y Tế</u></string>
+    <string name="mo_rong"><u>Mở rộng</u></string>
+    <string name="tra_cuu_ma_so_bhxh"><u>Tra cứu mã số BHXH</u></string>
+    <string name="map_api_key">AIzaSyCduA6T1EGMOpWf51Ibd6dVIehRxx5c31g</string>
+    <string name="title_activity_thong_tin">Thông tin khai báo y tế tự nguyện</string>
+    <string name="title_activity_tra_cuu_bhxh">Tra cứu mã số BHXH</string>
+    <string name="title_activity_huong_dan">Hướng dẫn phòng chống dịch</string>
+</resources>
