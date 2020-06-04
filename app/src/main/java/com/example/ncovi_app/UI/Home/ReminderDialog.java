@@ -1,11 +1,13 @@
 package com.example.ncovi_app.UI.Home;
 
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.Model.UserInfo;
 import com.example.ncovi_app.DB.UserInfoDB;
@@ -13,8 +15,11 @@ import com.example.ncovi_app.UI.SucKhoe.SucKhoeFragment;
 import com.example.ncovi_app.databinding.DialogReminderBinding;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ReminderDialog extends DialogFragment {
     DialogReminderBinding binding;
@@ -32,6 +37,9 @@ public class ReminderDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_reminder, container, false);
+        Integer fontRes = getActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getActivity(), fontRes);
+        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
         userInfoDB = new UserInfoDB(getActivity());
         getUserName();
         return binding.getRoot();
@@ -64,7 +72,7 @@ public class ReminderDialog extends DialogFragment {
 
                 userInfo.setFullName(cursor.getString(0));
             }
-            binding.txtHello.setText("Xin chào "+ userInfo.getFullName()+"!");
+            binding.txtHello.setText(getString(R.string.hello)+" "+ userInfo.getFullName()+"!");
         }
     }
 }

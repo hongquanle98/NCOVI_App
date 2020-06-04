@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.Model.Report;
 import com.example.ncovi_app.DB.ReportDB;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -74,6 +77,9 @@ public class PhanAnhFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_phan_anh, container, false);
+        Integer fontRes = getActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getActivity(), fontRes);
+        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
         binding.cbCamKet.setTextColor(Color.parseColor("#33F44336"));
         ReadOnlyEditText(binding.edtThoiGian);
         binding.edtThoiGian.setText(new HomeFragment().convertEpochTime(System.currentTimeMillis()));
@@ -128,7 +134,6 @@ public class PhanAnhFragment extends Fragment {
                     Collections.sort(tenPhuongArray);
                     adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, tenPhuongArray);
                     binding.spnPhuong.setAdapter(adapter);
-
                     progressDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,8 +150,8 @@ public class PhanAnhFragment extends Fragment {
 
     private void getSpinnerData() {
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("Đang tải dữ liệu");
-        progressDialog.setMessage("Xin chờ...");
+        progressDialog.setTitle(getString(R.string.loading));
+        progressDialog.setMessage(getString(R.string.waiting));
         progressDialog.setCancelable(false);
         progressDialog.show();
         String url;
@@ -227,11 +232,11 @@ public class PhanAnhFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!hasError()) {
-                    progressDialog = new ProgressDialog(getActivity());
-                    progressDialog.setTitle("Đang tải dữ liệu");
-                    progressDialog.setMessage("Xin chờ...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+//                    progressDialog = new ProgressDialog(getActivity());
+//                    progressDialog.setTitle("Đang tải dữ liệu");
+//                    progressDialog.setMessage("Xin chờ...");
+//                    progressDialog.setCancelable(false);
+//                    progressDialog.show();
                     Report report = new Report();
                     report.setDateTime(binding.edtThoiGian.getText().toString().trim());
                     String detail = "";
@@ -247,8 +252,8 @@ public class PhanAnhFragment extends Fragment {
                     report.setDetail(detail + "\nKhác: " + binding.edtNoiDung.getText().toString());
                     report.setAddress(binding.edtDuong.getText().toString() + ", " + binding.spnPhuong.getSelectedItem().toString() + ", " + binding.spnQuan.getSelectedItem().toString() + ", " + binding.spnTinh.getSelectedItem().toString());
                     reportDB.add(report);
-                    Toast.makeText(getActivity(), "Gửi thông tin phản ánh thành công", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), getString(R.string.update_report), Toast.LENGTH_SHORT).show();
+                    //progressDialog.dismiss();
                 }
             }
         });
@@ -256,7 +261,7 @@ public class PhanAnhFragment extends Fragment {
 
     private boolean hasError() {
         if (!binding.cb1.isChecked() && !binding.cb2.isChecked() && !binding.cb3.isChecked()) {
-            Toast.makeText(getActivity(), "Bạn phải chọn trường hợp phản ánh", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.choose_case), Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
@@ -303,7 +308,6 @@ public class PhanAnhFragment extends Fragment {
                 showDatePickerDialog(selectedHour, selectedMinute);
             }
         }, hour, minute, true);//Yes 24 hour time
-        mTimePicker.setTitle("Select Time");
         mTimePicker.show();
 
     }

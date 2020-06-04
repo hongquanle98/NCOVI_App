@@ -35,7 +35,7 @@ public class HealthHistoryDB {
         };
         Cursor cursor = null;
         cursor = database.query(DBHelper.
-                Health_History_TABLE, cot, null, null, null, null, DBHelper.Date_COL +" DESC"+", "+DBHelper.Time_COL +" DESC");
+                Health_History_TABLE, cot, null, null, null, null, "DATE("+DBHelper.Date_COL +") DESC"+", "+DBHelper.Time_COL +" DESC");
         return cursor;
     }
 

@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ncovi_app.DateInputMask;
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.Model.UserInfo;
 import com.example.ncovi_app.DB.UserInfoDB;
@@ -23,6 +24,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -61,7 +63,9 @@ public class ThongTinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_thong_tin);
-
+        Integer fontRes = getApplicationContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getApplicationContext(), fontRes);
+        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         queue = Volley.newRequestQueue(getApplicationContext());
         userInfoDB = new UserInfoDB(getApplicationContext());
@@ -87,6 +91,8 @@ public class ThongTinActivity extends AppCompatActivity {
                     Collections.sort(tenPhuongArray);
                     adapterPhuong = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, tenPhuongArray);
                     binding.spnPhuong.setAdapter(adapterPhuong);
+
+
 
                     progressDialog.dismiss();
                 } catch (Exception e) {
@@ -141,8 +147,8 @@ public class ThongTinActivity extends AppCompatActivity {
 
     private void getSpinnerData() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Đang tải dữ liệu");
-        progressDialog.setMessage("Xin chờ...");
+        progressDialog.setTitle(getString(R.string.loading));
+        progressDialog.setMessage(getString(R.string.waiting));
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -234,11 +240,11 @@ public class ThongTinActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!hasError()) {
-                    progressDialog = new ProgressDialog(getApplicationContext());
-                    progressDialog.setTitle("Đang tải dữ liệu");
-                    progressDialog.setMessage("Xin chờ...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+//                    progressDialog = new ProgressDialog(getApplicationContext());
+//                    progressDialog.setTitle("Đang tải dữ liệu");
+//                    progressDialog.setMessage("Xin chờ...");
+//                    progressDialog.setCancelable(false);
+//                    progressDialog.show();
                     UserInfo userInfo = new UserInfo();
                     userInfo.setFullName(binding.edtHoTen.getText().toString().trim());
                     userInfo.setiDNumber(binding.edtCMT.getText().toString().trim());
@@ -260,7 +266,7 @@ public class ThongTinActivity extends AppCompatActivity {
                         userInfoDB.edit(userInfo);
                         Toast.makeText(getApplicationContext(), "Cập nhật thông tin thành công", Toast.LENGTH_LONG).show();
                     }
-                    progressDialog.dismiss();
+//                    progressDialog.dismiss();
                 }
             }
         });
@@ -268,37 +274,37 @@ public class ThongTinActivity extends AppCompatActivity {
 
     private boolean hasError() {
         if (binding.edtHoTen.getText().toString().trim().isEmpty()) {
-            binding.edtHoTen.setError("Chưa nhập họ tên");
+            binding.edtHoTen.setError(getString(R.string.empty_full_name));
             binding.edtHoTen.requestFocus();
             return true;
         }
         if (binding.edtCMT.getText().toString().trim().isEmpty()) {
-            binding.edtCMT.setError("Chưa nhập CMT/CCCD/Hộ chiếu");
+            binding.edtCMT.setError(getString(R.string.empty_id_number));
             binding.edtCMT.requestFocus();
             return true;
         }
         if (binding.edtNgaySinh.getText().toString().trim().isEmpty()) {
-            binding.edtNgaySinh.setError("Chưa nhập ngày tháng năm sinh");
+            binding.edtNgaySinh.setError(getString(R.string.empty_dob));
             binding.edtNgaySinh.requestFocus();
             return true;
         }
         if (binding.edtSDT.getText().toString().trim().isEmpty()) {
-            binding.edtSDT.setError("Chưa nhập số điện thoại");
+            binding.edtSDT.setError(getString(R.string.empty_phone));
             binding.edtSDT.requestFocus();
             return true;
         }
         if (!validCMT(binding.edtCMT.getText().toString())) {
-            binding.edtCMT.setError("CMT/CCCD/Hộ chiếu không hợp lệ");
+            binding.edtCMT.setError(getString(R.string.invalid_id));
             binding.edtCMT.requestFocus();
             return true;
         }
         if (!validDate(binding.edtNgaySinh.getText().toString())) {
-            binding.edtNgaySinh.setError("Họ tên không hợp lệ");
+            binding.edtNgaySinh.setError(getString(R.string.invalid_dob));
             binding.edtNgaySinh.requestFocus();
             return true;
         }
         if (!validPhone(binding.edtSDT.getText().toString())) {
-            binding.edtSDT.setError("Họ tên không hợp lệ");
+            binding.edtSDT.setError(getString(R.string.invalid_name));
             binding.edtSDT.requestFocus();
             return true;
         }

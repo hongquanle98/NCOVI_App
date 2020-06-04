@@ -30,6 +30,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ncovi_app.Adapter.SpinnerAdapter;
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.Model.Nation;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.databinding.FragmentHomeBinding;
@@ -77,7 +78,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-
+        Integer fontRes = getActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getActivity(), fontRes);
+        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -121,14 +124,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 resetStyleButton(binding.btnVietNam);
                 binding.btnTheGioi.setCompoundDrawableTintList(ColorStateList.valueOf(Color.argb(100, 76, 175, 80)));
                 binding.btnTheGioi.setTextColor(Color.rgb(63, 81, 181));
-                binding.spnQuocGia.setSelection(spinnerAdapter.getPos("Thế giới"));
+                binding.spnQuocGia.setSelection(spinnerAdapter.getPos(getString(R.string.world_btn)));
                 //getData(null);
             }
         });
         binding.btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (nationData.get(binding.spnQuocGia.getSelectedItemPosition()).getName().contains("Thế giới")) {
+                if (nationData.get(binding.spnQuocGia.getSelectedItemPosition()).getName().contains(getString(R.string.world_btn))) {
                     getData(null);
                 } else {
                     getData(nationData.get(binding.spnQuocGia.getSelectedItemPosition()).getName());
@@ -138,7 +141,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding.spnQuocGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (nationData.get(position).getName().contains("Thế giới")) {
+                if (nationData.get(position).getName().contains(getString(R.string.world_btn))) {
                     getData(null);
                 } else {
                     getData(nationData.get(position).getName());
@@ -189,7 +192,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    nationData.add(new Nation("Thế giới", "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6/128/world-all-outline-512.png"));
+                    nationData.add(new Nation(getString(R.string.world_btn), "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-6/128/world-all-outline-512.png"));
                     for (int i = 0; i < response.length(); i++) {
                         Nation nation = new Nation();
                         nation.setName(response.getJSONObject(i).getString("country"));
@@ -216,8 +219,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private void getData(final String country) {
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("Đang tải dữ liệu của " + (country == null ? "Thế giới" : country));
-        progressDialog.setMessage("Xin chờ...");
+        progressDialog.setTitle(getString(R.string.loading)+" " + (country == null ? getString(R.string.world_btn) : country));
+        progressDialog.setMessage(getString(R.string.waiting));
         progressDialog.setCancelable(false);
         progressDialog.show();
         String url;
@@ -226,7 +229,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         } else {
             url = "https://disease.sh/v2/countries/" + country;
         }
-        Toast.makeText(getActivity(), (country == null ? "Thế giới" : country), Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), (country == null ? getString(R.string.world_btn) : country), Toast.LENGTH_LONG).show();
         final DecimalFormat formatter = new DecimalFormat("#,###,###");
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -239,7 +242,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     binding.txtNBtoday.setText("+ " + formatter.format(Long.parseLong(jsonObject.getString("todayCases"))));
                     binding.txtTVtoday.setText("+ " + formatter.format(Long.parseLong(jsonObject.getString("todayDeaths"))));
                     Long updatedTime = Long.parseLong(jsonObject.getString("updated"));
-                    binding.txtCapNhat.setText("Cập nhật: " + convertEpochTime(updatedTime) + (country == null ? "\n" + jsonObject.getString("affectedCountries") + " quốc gia bị ảnh hưởng" : ""));
+                    binding.txtCapNhat.setText(getString(R.string.update)+ " " + convertEpochTime(updatedTime) + (country == null ? "\n" + jsonObject.getString("affectedCountries") + " "+getString(R.string.affect) : ""));
                     progressDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();

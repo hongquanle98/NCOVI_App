@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--change language-->
+    <string name="change_language_title">Ngôn ngữ</string>
+
+    <string name="language_english">Tiếng Anh</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+
+    <string name="home">Home</string>
+    <string name="health">Sức khoẻ</string>
+    <string name="report">Phản ánh</string>
+    <string name="setting">Cài đặt</string>
+
+    <string name="disease_info">Thông tin dịch bệnh</string>
+    <string name="vietnam_btn">Việt Nam</string>
+    <string name="world_btn">Thế giới</string>
+    <string name="nation">Quốc gia: </string>
+    <string name="infection">\nNhiễm bệnh</string>
+    <string name="dead">\nTử vong</string>
+    <string name="recover">\nHồi phục</string>
+    <string name="update">Cập nhật:</string>
+    <string name="affect">quốc gia bị ảnh hưởng</string>
+    <string name="see_details"><u>Xem chi tiết</u></string>
+    <string name="source"><u>Nguồn: Bộ y tế</u></string>
+    <string name="zoom_in"><u>Mở rộng</u></string>
+    <string name="vmd_btn">khai báo y tế tự nguyện</string>
+    <string name="ipe_btn">hướng dẫn phòng chống dịch</string>
+    <string name="warning_areas">Cảnh báo khu vực có dịch</string>
+
+    <string name="vmd_title">Thông tin khai báo y tế tự nguyện</string>
+    <string name="dpi">Khai báo thông tin cá nhân</string>
+    <string name="full_name">Họ và tên*</string>
+    <string name="full_name_hint">Nhập họ và tên</string>
+    <string name="id_number">Số CMT/CCCD/Hộ chiếu*</string>
+    <string name="id_number_hint">Nhập số CMT/CCCD/Hộ chiếu</string>
+    <string name="sin">Mã số BHXH</string>
+    <string name="sin_note">(Đây là thông tin quan trọng để cơ quan chức năng kiểm soát, hỗ trợ bạn tốt hơn)</string>
+    <string name="sin_hint">Nhập mã số BHXH</string>
+    <string name="look_up">Tra cứu mã số BHXH</string>
+    <string name="dob">Ngày tháng năm sinh*</string>
+    <string name="gender">Giới tính*</string>
+    <string name="gender_male">Nam</string>
+    <string name="gender_female">Nữ</string>
+    <string name="nationality">Chọn quốc tịch</string>
+    <string name="address_in_vn">Địa chỉ tại Việt Nam*</string>
+    <string name="phone_number">Số điện thoại*</string>
+    <string name="phone_number_hint">Nhập số điện thoại</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Nhập email</string>
+    <string name="continue_btn">tiếp tục</string>
+    <string name="ipe_title">Hướng dẫn phòng chống dịch</string>
+    <string name="empty_full_name">Chưa nhập họ tên!</string>
+    <string name="empty_id_number">Chưa nhập CMT/CCCD/Hộ chiếu!</string>
+    <string name="empty_dob">Chưa nhập ngày tháng năm sinh!</string>
+    <string name="empty_phone">Chưa nhập số điện thoại!</string>
+    <string name="invalid_dob">Ngày sinh không hợp lệ!</string>
+    <string name="invalid_id">CMT/CCCD/Hộ chiếu không hợp lệ!</string>
+    <string name="invalid_name">Họ tên không hợp lệ!</string>
+
+    <string name="health_tracking">Theo dõi sức khoẻ</string>
+    <string name="health_info">Chọn thông tin sức khoẻ hiện tại của bạn</string>
+    <string name="fever">Sốt</string>
+    <string name="cough">Ho</string>
+    <string name="short_breath">Khó thở</string>
+    <string name="body_aches">Đau người, mệt mỏi</string>
+    <string name="healthy">Sức khoẻ tốt</string>
+    <string name="health_history">Lịch sử theo dõi sức khoẻ</string>
+    <string name="health_info_txt">Thông tin sức khoẻ: </string>
+    <string name="health_status_1">An toàn</string>
+    <string name="health_status_2">Trung bình</string>
+    <string name="health_status_3">Báo động</string>
+    <string name="health_info_1">Bình thường</string>
+    <string name="health_info_2">Không tốt, có thể điều trị tại nhà</string>
+    <string name="health_info_3">Nguy cơ nhiễm COVID-19, cần đi khám ngay</string>
+    <string name="update_info">Cập nhật thông tin sức khoẻ thành công</string>
+    <string name="choose_health_history">Chọn thông tin sức khoẻ hiện tại!</string>
+    <string name="delete_history">Chắc chắn xoá lịch sử này?</string>
+    <string name="delete_history_yes">Có</string>
+    <string name="delete_history_no">Không</string>
+    <string name="delete_history_result">Xoá lịch sử thành công</string>
+
+    <string name="reflect_info">Phản ánh thông tin</string>
+    <string name="hotline_txt">Vui lòng nhập thông tin hoặc gọi đường dây nóng</string>
+    <string name="cases_include">Chọn các trường hợp phản ánh</string>
+    <string name="cb1">Có người tiếp xúc với trường hợp bệnh hoặc nghi ngờ mắc bệnh COVID-19</string>
+    <string name="cb2">Có trường hợp đi từ vùng dịch COVID-19</string>
+    <string name="cb3">Có người tiếp xúc với các trường hợp đi về từ vùng dịch COVID-19</string>
+    <string name="other">Nội dung phản ánh khác</string>
+    <string name="other_hint">Nhập nội dung</string>
+    <string name="detect_time">Thời gian phát hiện*</string>
+    <string name="location_occurr">Địa điểm xảy ra*</string>
+    <string name="street_hint">Số nhà, đường, ...</string>
+    <string name="cb">Tôi cam kết các thông tin khai báo là đúng sự thật và đồng ý chia sẻ vị trí để cơ quan chức năng có thể hỗ trợ tốt nhất.</string>
+    <string name="choose_case">Chọn trường hợp phản ánh!</string>
+    <string name="update_report">Gửi thông tin phản ánh thành công</string>
+
+    <string name="send_info_btn">gửi thông tin</string>
+
+    <string name="hello">Xin chào</string>
+    <string name="reminder_content">Hãy cập nhật tình trạng sức khoẻ của bạn ngay lúc này!</string>
+    <string name="yes_btn">đồng ý</string>
+
+    <string name="loading">Đang tải dữ liệu</string>
+    <string name="waiting">Xin chờ...</string>
+
+    <string name="font">Kiểu chữ</string>
+    <string name="default_font">Mặc định</string>
+    <string name="bread_font">Bánh mì</string>
+    <string name="save">Lưu</string>
+</resources>

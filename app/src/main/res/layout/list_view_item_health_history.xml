@@ -28,7 +28,7 @@
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="status"
+                android:text="@string/health_status_1"
                 android:textColor="@color/colorTextButton"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thông tin sức khoẻ:"
+                android:text="@string/health_info_txt"
                 android:textSize="12sp"/>
 
             <TextView

@@ -1,12 +1,114 @@
 <resources>
-    <string name="app_name">NCOVI</string>
+    <string name="app_name" translatable="false">NCOVI</string>
 
-    <string name="xem_chi_tiet"><u>Xem chi tiết</u></string>
-    <string name="nguon_bo_y_te"><u>Nguồn: Bộ Y Tế</u></string>
-    <string name="mo_rong"><u>Mở rộng</u></string>
-    <string name="tra_cuu_ma_so_bhxh"><u>Tra cứu mã số BHXH</u></string>
-    <string name="map_api_key">AIzaSyCduA6T1EGMOpWf51Ibd6dVIehRxx5c31g</string>
-    <string name="title_activity_thong_tin">Thông tin khai báo y tế tự nguyện</string>
-    <string name="title_activity_tra_cuu_bhxh">Tra cứu mã số BHXH</string>
-    <string name="title_activity_huong_dan">Hướng dẫn phòng chống dịch</string>
+    <string name="map_api_key" translatable="false">AIzaSyCduA6T1EGMOpWf51Ibd6dVIehRxx5c31g</string>
+
+    <!--change language-->
+    <string name="change_language_title">Language</string>
+
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Vietnamese</string>
+
+    <string name="home">Home</string>
+    <string name="health">Health</string>
+    <string name="report">Report</string>
+    <string name="setting">Setting</string>
+
+    <string name="disease_info">Disease information</string>
+    <string name="vietnam_btn">Vietnam</string>
+    <string name="world_btn">World</string>
+    <string name="nation">Nation:</string>
+    <string name="infection">\nInfection</string>
+    <string name="dead">\nDead</string>
+    <string name="recover">\nRecover</string>
+    <string name="update">Update:</string>
+    <string name="affect">countries affected</string>
+    <string name="see_details"><u>See details</u></string>
+    <string name="source"><u>Source: Ministry of Health</u></string>
+    <string name="zoom_in"><u>Zoom in</u></string>
+    <string name="vmd_btn">voluntary medical declaration</string>
+    <string name="ipe_btn">instructions to prevent epidemics</string>
+    <string name="warning_areas">Warning areas of epidemic</string>
+
+    <string name="vmd_title">Voluntary declaration of Medical information</string>
+    <string name="dpi">Declaring Personal Information</string>
+    <string name="full_name">Full Name*</string>
+    <string name="full_name_hint">Enter Full Name</string>
+    <string name="id_number">Passport number*</string>
+    <string name="id_number_hint">Enter your Passport number</string>
+    <string name="sin">Social Insurance number</string>
+    <string name="sin_note">(This is important information for authorities to control and support you better)</string>
+    <string name="sin_hint">Enter the Social Insurance number</string>
+    <string name="look_up">Look up Social Insurance number</string>
+    <string name="dob">Date of Birth*</string>
+    <string name="gender">Gender*</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="nationality">Choose your nationality</string>
+    <string name="address_in_vn">Address in Vietnam*</string>
+    <string name="phone_number">Phone number*</string>
+    <string name="phone_number_hint">Enter phone number</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Enter Email</string>
+    <string name="continue_btn">continue</string>
+    <string name="ipe_title">Instructions to prevent epidemics</string>
+    <string name="empty_full_name">Empty full name!</string>
+    <string name="empty_id_number">Empty passport number!</string>
+    <string name="empty_dob">Empty date of birth!</string>
+    <string name="empty_phone">Empty phone number!</string>
+    <string name="invalid_dob">Invalid date of birth!</string>
+    <string name="invalid_id">Invalid passport number!</string>
+    <string name="invalid_name">Invalid full name!</string>
+
+    <string name="health_tracking">Health Tracking</string>
+    <string name="health_info">Select your current health information</string>
+    <string name="fever">Fever</string>
+    <string name="cough">Cough</string>
+    <string name="short_breath">Shortness of breath</string>
+    <string name="body_aches">Body aches, tiredness</string>
+    <string name="healthy">Healthy</string>
+    <string name="health_history">Health tracking history</string>
+    <string name="health_info_txt">Health Information: </string>
+    <string name="health_status_1">Safe</string>
+    <string name="health_status_2">Average</string>
+    <string name="health_status_3">Danger</string>
+    <string name="health_info_1">Normal</string>
+    <string name="health_info_2">Not good, can be treated at home</string>
+    <string name="health_info_3">Risk of infection COVID-19, go to hospital immediately</string>
+    <string name="update_info">Update information successfully</string>
+    <string name="choose_health_history">Choose one health information!</string>
+    <string name="delete_history">Are you sure delete this history?</string>
+    <string name="delete_history_yes">Yes</string>
+    <string name="delete_history_no">No</string>
+    <string name="delete_history_result">Delete health history successfully</string>
+
+    <string name="reflect_info">Reflect the information</string>
+    <string name="hotline_txt">Please enter information or call the hotline</string>
+    <string name="cases_include">Please reflect the information cases including</string>
+    <string name="cb1">People who interact with the infectious cases or suspect to be infected with the COVID-19 epidemic</string>
+    <string name="cb2">People who arrive from the COVID-19 epidemic areas</string>
+    <string name="cb3">People who interact with the cases from the COVID-19 epidemic areas</string>
+    <string name="other">Other</string>
+    <string name="other_hint">Input content</string>
+    <string name="detect_time">Detection time*</string>
+    <string name="location_occurr">Location occurred*</string>
+    <string name="street_hint">House number, street, ...</string>
+    <string name="cb">I hearby declare that the information provided is true and agree to share the location to help the authorities to support better.</string>
+    <string name="choose_case">Choose one report case!</string>
+    <string name="update_report">Send report successfully</string>
+
+    <string name="send_info_btn">send information</string>
+
+    <string name="hello">Hello</string>
+    <string name="reminder_content">Update your current health information!</string>
+    <string name="yes_btn">yes</string>
+
+    <string name="loading">Loading data</string>
+    <string name="waiting">Waiting...</string>
+
+    <string name="font">Font</string>
+    <string name="default_font">Default</string>
+    <string name="bread_font">Bread</string>
+    <string name="save">Save</string>
+
 </resources>

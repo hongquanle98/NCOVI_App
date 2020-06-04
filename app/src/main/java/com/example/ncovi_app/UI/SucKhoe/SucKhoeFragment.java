@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.ncovi_app.Adapter.ListViewAdapter;
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.Model.HealthHistory;
 import com.example.ncovi_app.DB.HealthHistoryDB;
 import com.example.ncovi_app.R;
@@ -25,6 +26,8 @@ import com.example.ncovi_app.UI.Home.HomeFragment;
 import com.example.ncovi_app.databinding.FragmentSucKhoeBinding;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -49,6 +52,9 @@ public class SucKhoeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_suc_khoe, container, false);
+        Integer fontRes = getActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getActivity(), fontRes);
+        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
         healthHistoryDB = new HealthHistoryDB(getActivity());
         listViewAdapter = new ListViewAdapter(getActivity(), R.layout.list_view_item_health_history, healthHistories);
         binding.lsvLichSu.setAdapter(listViewAdapter);
@@ -105,25 +111,28 @@ public class SucKhoeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!hasError()) {
-                    progressDialog = new ProgressDialog(getActivity());
-                    progressDialog.setTitle("Đang tải dữ liệu");
-                    progressDialog.setMessage("Xin chờ...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+//                    progressDialog = new ProgressDialog(getActivity());
+//                    progressDialog.setTitle("Đang tải dữ liệu");
+//                    progressDialog.setMessage("Xin chờ...");
+//                    progressDialog.setCancelable(false);
+//                    progressDialog.show();
                     HealthHistory healthHistory = new HealthHistory();
                     String dateTime = new HomeFragment().convertEpochTime(System.currentTimeMillis());
                     dateTime = dateTime.replaceAll("\\s", "");
                     String dateTimeArray[] = dateTime.split(",");
 
-                    healthHistory.setDate(dateTimeArray[1]);
+                    //healthHistory.setDate(dateTimeArray[1]);
                     healthHistory.setTime(dateTimeArray[0]);
                     healthHistory.setStatus(getHealthStatus());
                     healthHistory.setInfo(getHealthInfo());
 
+
+
+                    healthHistory.setDate(dateFormat(dateTimeArray[1]));
                     healthHistoryDB.add(healthHistory);
                     getAllData();
-                    Toast.makeText(getActivity(), "Gửi thông tin sức khoẻ thành công", Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), getString(R.string.update_info), Toast.LENGTH_LONG).show();
+//                    progressDialog.dismiss();
                 }
             }
         });
@@ -133,15 +142,16 @@ public class SucKhoeFragment extends Fragment {
                 // Use the Builder class for convenient dialog construction
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false);
-                builder.setMessage("Bạn có chắc chắn xoá lịch sử này?")
-                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.delete_history))
+                        .setPositiveButton(getString(R.string.delete_history_no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                healthHistories.get(position).setDate(dateFormat(healthHistories.get(position).getDate()));
                                 healthHistoryDB.delete(healthHistories.get(position));
                                 getAllData();
-                                Toast.makeText(getActivity(), "Xoá thông tin sức khoẻ thành công", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), getString(R.string.delete_history_result), Toast.LENGTH_LONG).show();
                             }
                         })
-                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.delete_history_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog
                                 dialog.dismiss();
@@ -155,13 +165,9 @@ public class SucKhoeFragment extends Fragment {
         });
     }
 
-    public void showAlertDialog(int position){
-
-    }
-
     private boolean hasError() {
         if (!(binding.cbSot.isChecked() || binding.cbHo.isChecked() || binding.cbKhoTho.isChecked() || binding.cbDauNguoi.isChecked() || binding.cbSucKhoeTot.isChecked())) {
-            Toast.makeText(getActivity(), "Bạn phải chọn thông tin sức khoẻ hiện tại", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.choose_health_history), Toast.LENGTH_LONG).show();
             return true;
         }
         return false;
@@ -197,7 +203,7 @@ public class SucKhoeFragment extends Fragment {
             healthHistories.clear();
             while (cursor.moveToNext()) {
                 HealthHistory healthHistory = new HealthHistory();
-                healthHistory.setDate(cursor.getString(0));
+                healthHistory.setDate(dateFormat(cursor.getString(0)));
                 healthHistory.setTime(cursor.getString(1));
                 healthHistory.setStatus(cursor.getString(2));
                 healthHistory.setInfo(cursor.getString(3));
@@ -205,6 +211,11 @@ public class SucKhoeFragment extends Fragment {
             }
             listViewAdapter.notifyDataSetChanged();
         }
+    }
+    public String dateFormat(String date){
+        String dateArray[] = date.split("-");
+        String dateFormat = dateArray[2] + "-" + dateArray[1] + "-" + dateArray[0];
+        return dateFormat;
     }
 
 }

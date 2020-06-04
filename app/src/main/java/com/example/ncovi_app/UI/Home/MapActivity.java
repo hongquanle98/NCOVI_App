@@ -11,8 +11,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toolbar;
 
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.databinding.ActivityMapBinding;
 import com.google.android.gms.maps.CameraUpdate;
@@ -32,6 +34,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_map);
+        Integer fontRes = getApplicationContext().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getApplicationContext(), fontRes);
+        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

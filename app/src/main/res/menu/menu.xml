@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/home"
-        android:title="Home"
+        android:title="@string/home"
         android:icon="@drawable/ic_home"/>
     <item
         android:id="@+id/sucKhoe"
-        android:title="Sức khoẻ"
+        android:title="@string/health"
         android:icon="@drawable/ic_favorite"/>
     <item
         android:id="@+id/phanAnh"
-        android:title="Phản ánh"
+        android:title="@string/report"
         android:icon="@drawable/ic_comment"/>
+    <item
+        android:id="@+id/setting"
+        android:title="@string/setting"
+        android:icon="@drawable/ic_settings"/>
 </menu>

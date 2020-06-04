@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.Model.Nation;
 import com.example.ncovi_app.R;
 
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SpinnerAdapter extends ArrayAdapter {
     Context context;
@@ -60,6 +63,9 @@ public class SpinnerAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater.from(context));
         convertView = inflater.inflate(layoutId, null);
+        Integer fontRes = context.getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
+        FontChangeCrawler fontChanger = new FontChangeCrawler(context, fontRes);
+        fontChanger.replaceFonts((ViewGroup)convertView);
         TextView txtNation =(TextView) convertView.findViewById(R.id.txtNation);
         ImageView img =(ImageView) convertView.findViewById(R.id.flag);
         txtNation.setText(nationData.get(position).getName());
