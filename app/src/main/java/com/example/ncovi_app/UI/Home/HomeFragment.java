@@ -1,5 +1,7 @@
 package com.example.ncovi_app.UI.Home;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,13 +9,9 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +19,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,16 +35,23 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ncovi_app.Adapter.SpinnerAdapter;
 import com.example.ncovi_app.FontChangeCrawler;
+import com.example.ncovi_app.GeofenceHelper;
 import com.example.ncovi_app.Model.Nation;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.databinding.FragmentHomeBinding;
-import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,14 +70,25 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+
+
+    private static final String TAG = "HomeFragment";
 
     FragmentHomeBinding binding;
     RequestQueue queue;
     ArrayList<Nation> nationData = new ArrayList<>();
     SpinnerAdapter spinnerAdapter;
     ProgressDialog progressDialog;
+
     GoogleMap mMap;
+    private GeofencingClient geofencingClient;
+    private GeofenceHelper geofenceHelper;
+
+    private int FINE_LOCATION_ACCESS_REQUEST_CODE = 10001;
+    private int BACKGROUND_LOCATION_ACCESS_REQUEST_CODE = 10002;
+    private float GEOFENCE_RADIUS = 200;
+    private String GEOFENCE_ID = "SOME_GEOFENCE_ID";
 
     public HomeFragment() {
         // Required empty public constructor
@@ -80,11 +102,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         Integer fontRes = getActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("font", R.font.default_font);
         FontChangeCrawler fontChanger = new FontChangeCrawler(getActivity(), fontRes);
-        fontChanger.replaceFonts((ViewGroup)binding.getRoot());
+        fontChanger.replaceFonts((ViewGroup) binding.getRoot());
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        geofencingClient = LocationServices.getGeofencingClient(getActivity());
+        geofenceHelper = new GeofenceHelper(getActivity());
 
         queue = Volley.newRequestQueue(getActivity());
 
@@ -169,7 +192,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding.txtMoRong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MapActivity.class));
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                intent.putExtra("isAppOpened", true);
+                startActivity(intent);
             }
         });
         binding.btnHuongDan.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +244,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private void getData(final String country) {
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle(getString(R.string.loading)+" " + (country == null ? getString(R.string.world_btn) : country));
+        progressDialog.setTitle(getString(R.string.loading) + " " + (country == null ? getString(R.string.world_btn) : country));
         progressDialog.setMessage(getString(R.string.waiting));
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -242,7 +267,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     binding.txtNBtoday.setText("+ " + formatter.format(Long.parseLong(jsonObject.getString("todayCases"))));
                     binding.txtTVtoday.setText("+ " + formatter.format(Long.parseLong(jsonObject.getString("todayDeaths"))));
                     Long updatedTime = Long.parseLong(jsonObject.getString("updated"));
-                    binding.txtCapNhat.setText(getString(R.string.update)+ " " + convertEpochTime(updatedTime) + (country == null ? "\n" + jsonObject.getString("affectedCountries") + " "+getString(R.string.affect) : ""));
+                    binding.txtCapNhat.setText(getString(R.string.update) + " " + convertEpochTime(updatedTime) + (country == null ? "\n" + jsonObject.getString("affectedCountries") + " " + getString(R.string.affect) : ""));
                     progressDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -255,7 +280,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         });
         queue.add(request);
-
     }
 
     public String convertEpochTime(Long updatedTime) {
@@ -275,42 +299,133 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
 
-        mMap.setMyLocationEnabled(true);
+        //LatLng home = new LatLng(10.847047, 106.786939);
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 16));
+
+        enableUserLocation();
 
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-
-                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
-                mMap.clear();
-
-                MarkerOptions mp = new MarkerOptions();
-
-                mp.position(new LatLng(location.getLatitude(), location.getLongitude()));
-                mp.title("Vị trí của tôi");
-                mp.snippet("Ở yên đấy đi!");
-
-                mMap.addMarker(mp);
-                mMap.moveCamera(center);
-                mMap.animateCamera(zoom);
-
+                LatLng home = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 16));
             }
         });
+        addDieaseArea(new LatLng(10.844006, 106.787186));
+        //mMap.setOnMapLongClickListener(this);
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        map = googleMap;
-//        LatLng location = new LatLng(latitude, longitude);
-//        map.addMarker(new MarkerOptions().position(location)
-//                .title("Vị trí của tôi")
-//                .snippet("Ở yên đấy đi!"));
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
-//    }
+    private void addDieaseArea(LatLng latLng) {
+        addMarker(latLng);
+        addCircle(latLng, GEOFENCE_RADIUS);
+        addGeofence(latLng, GEOFENCE_RADIUS);
+    }
+
+    private void enableUserLocation() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            //ask for permission
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                //show user a dialog for displaying why the permisson is needed and then ask for the permisson
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_ACCESS_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_ACCESS_REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == FINE_LOCATION_ACCESS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                //have permission
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                }
+            } else {
+                //dont have permisson
+            }
+        }
+
+        if (requestCode == BACKGROUND_LOCATION_ACCESS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                //have permission
+                Toast.makeText(getActivity(), "You can add geofences...", Toast.LENGTH_SHORT).show();
+            } else {
+                //dont have permisson
+                Toast.makeText(getActivity(), "Background location access is neccessary for geofences to trigger...", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        if (Build.VERSION.SDK_INT >= 29){
+            //need background permission
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                handleMapLongClick(latLng);
+            }else{
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    //show user a dialog for displaying why the permisson is needed and then ask for the permisson
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, BACKGROUND_LOCATION_ACCESS_REQUEST_CODE);
+                }else {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, BACKGROUND_LOCATION_ACCESS_REQUEST_CODE);
+                }
+            }
+        }else{
+            handleMapLongClick(latLng);
+        }
+    }
+
+
+
+    private void handleMapLongClick(LatLng latLng){
+        //mMap.clear();
+        addMarker(latLng);
+        addCircle(latLng, GEOFENCE_RADIUS);
+        addGeofence(latLng, GEOFENCE_RADIUS);
+    }
+
+    private void addGeofence(LatLng latLng, float radius) {
+        Geofence geofence = geofenceHelper.getGeofence(GEOFENCE_ID, latLng, radius, Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT);
+        GeofencingRequest geofencingRequest = geofenceHelper.getGeofencingRequest(geofence);
+        PendingIntent pendingIntent = geofenceHelper.getPendingIntent();
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            geofencingClient.addGeofences(geofencingRequest, pendingIntent)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "onSuccess: Geofence Added...");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String errorMessage = geofenceHelper.getErrorString(e);
+                            Log.d(TAG, "onFailure: " + errorMessage);
+                        }
+                    });
+        }
+    }
+
+    private void addMarker(LatLng latLng){
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title("Vùng có dịch!")
+                .snippet("Nguy hiểm! Hãy cẩn thận khi di chuyển trong vùng này.");
+        mMap.addMarker(markerOptions);
+    }
+
+    private void addCircle(LatLng latLng, float radius){
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.center(latLng);
+        circleOptions.radius(radius);
+        circleOptions.strokeColor(Color.argb(255,255,0,0));
+        circleOptions.fillColor(Color.argb(60,255,0,0));
+        circleOptions.strokeWidth(4);
+        mMap.addCircle(circleOptions);
+    }
 
 }

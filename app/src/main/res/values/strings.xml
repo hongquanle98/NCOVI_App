@@ -32,21 +32,21 @@
 
     <string name="vmd_title">Voluntary declaration of Medical information</string>
     <string name="dpi">Declaring Personal Information</string>
-    <string name="full_name">Full Name*</string>
+    <string name="full_name">Full Name<font color="red">*</font></string>
     <string name="full_name_hint">Enter Full Name</string>
-    <string name="id_number">Passport number*</string>
+    <string name="id_number">Passport number<font color="red">*</font></string>
     <string name="id_number_hint">Enter your Passport number</string>
     <string name="sin">Social Insurance number</string>
     <string name="sin_note">(This is important information for authorities to control and support you better)</string>
     <string name="sin_hint">Enter the Social Insurance number</string>
     <string name="look_up">Look up Social Insurance number</string>
-    <string name="dob">Date of Birth*</string>
-    <string name="gender">Gender*</string>
+    <string name="dob">Date of Birth<font color="red">*</font></string>
+    <string name="gender">Gender<font color="red">*</font></string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
     <string name="nationality">Choose your nationality</string>
-    <string name="address_in_vn">Address in Vietnam*</string>
-    <string name="phone_number">Phone number*</string>
+    <string name="address_in_vn">Address in Vietnam<font color="red">*</font></string>
+    <string name="phone_number">Phone number<font color="red">*</font></string>
     <string name="phone_number_hint">Enter phone number</string>
     <string name="email">Email</string>
     <string name="email_hint">Enter Email</string>
@@ -90,8 +90,8 @@
     <string name="cb3">People who interact with the cases from the COVID-19 epidemic areas</string>
     <string name="other">Other</string>
     <string name="other_hint">Input content</string>
-    <string name="detect_time">Detection time*</string>
-    <string name="location_occurr">Location occurred*</string>
+    <string name="detect_time">Detection time<font color="red">*</font></string>
+    <string name="location_occurr">Location occurred<font color="red">*</font></string>
     <string name="street_hint">House number, street, ...</string>
     <string name="cb">I hearby declare that the information provided is true and agree to share the location to help the authorities to support better.</string>
     <string name="choose_case">Choose one report case!</string>
@@ -110,5 +110,25 @@
     <string name="default_font">Default</string>
     <string name="bread_font">Bread</string>
     <string name="save">Save</string>
+    <string name="save_setting">Save change?</string>
 
+<!--    <string name="enter_disease_area_title">Warning!</string>-->
+<!--    <string name="enter_disease_area_body">Entering diease area.\nTap to get more information</string>-->
+<!--    <string name="enter_disease_area_text">Entering diease area.</string>-->
+<!--    <string name="dwell_disease_area_title">Danger!</string>-->
+<!--    <string name="dwell_disease_area_body">Diease area.\nTap to get more information</string>-->
+<!--    <string name="dwell_disease_area_text">Diease area.</string>-->
+<!--    <string name="exit_disease_area_title">Safe!</string>-->
+<!--    <string name="exit_disease_area_body">Exit diease area.\nTap to get more information</string>-->
+<!--    <string name="exit_disease_area_text">Exit area.</string>-->
+
+    <string name="enter_disease_area_title">Cảnh báo!</string>
+    <string name="enter_disease_area_body">Bạn đang đi vào khu vực có dịch.\nNhấn vào để xem thêm thông tin</string>
+    <string name="enter_disease_area_text">Bạn đang đi vào khu vực có dịch.</string>
+    <string name="dwell_disease_area_title">Vùng có dịch!</string>
+    <string name="dwell_disease_area_body">Bạn đang ở trong khu vực có dịch.\nNhấn vào để xem thêm thông tin</string>
+    <string name="dwell_disease_area_text">Bạn đang ở trong khu vực có dịch.</string>
+    <string name="exit_disease_area_title">Khu vực an toàn!</string>
+    <string name="exit_disease_area_body">Bạn đã ra khỏi khu vực có dịch.\nNhấn vào để xem thêm thông tin</string>
+    <string name="exit_disease_area_text">Bạn đã ra khỏi khu vực có dịch.</string>
 </resources>

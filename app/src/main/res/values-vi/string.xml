@@ -31,19 +31,19 @@
     <string name="dpi">Khai báo thông tin cá nhân</string>
     <string name="full_name">Họ và tên*</string>
     <string name="full_name_hint">Nhập họ và tên</string>
-    <string name="id_number">Số CMT/CCCD/Hộ chiếu*</string>
+    <string name="id_number">Số CMT/CCCD/Hộ chiếu<font color="red">*</font></string>
     <string name="id_number_hint">Nhập số CMT/CCCD/Hộ chiếu</string>
     <string name="sin">Mã số BHXH</string>
     <string name="sin_note">(Đây là thông tin quan trọng để cơ quan chức năng kiểm soát, hỗ trợ bạn tốt hơn)</string>
     <string name="sin_hint">Nhập mã số BHXH</string>
     <string name="look_up">Tra cứu mã số BHXH</string>
-    <string name="dob">Ngày tháng năm sinh*</string>
-    <string name="gender">Giới tính*</string>
+    <string name="dob">Ngày tháng năm sinh<font color="red">*</font></string>
+    <string name="gender">Giới tính<font color="red">*</font></string>
     <string name="gender_male">Nam</string>
     <string name="gender_female">Nữ</string>
     <string name="nationality">Chọn quốc tịch</string>
-    <string name="address_in_vn">Địa chỉ tại Việt Nam*</string>
-    <string name="phone_number">Số điện thoại*</string>
+    <string name="address_in_vn">Địa chỉ tại Việt Nam<font color="red">*</font></string>
+    <string name="phone_number">Số điện thoại<font color="red">*</font></string>
     <string name="phone_number_hint">Nhập số điện thoại</string>
     <string name="email">Email</string>
     <string name="email_hint">Nhập email</string>
@@ -87,8 +87,8 @@
     <string name="cb3">Có người tiếp xúc với các trường hợp đi về từ vùng dịch COVID-19</string>
     <string name="other">Nội dung phản ánh khác</string>
     <string name="other_hint">Nhập nội dung</string>
-    <string name="detect_time">Thời gian phát hiện*</string>
-    <string name="location_occurr">Địa điểm xảy ra*</string>
+    <string name="detect_time">Thời gian phát hiện<font color="red">*</font></string>
+    <string name="location_occurr">Địa điểm xảy ra<font color="red">*</font></string>
     <string name="street_hint">Số nhà, đường, ...</string>
     <string name="cb">Tôi cam kết các thông tin khai báo là đúng sự thật và đồng ý chia sẻ vị trí để cơ quan chức năng có thể hỗ trợ tốt nhất.</string>
     <string name="choose_case">Chọn trường hợp phản ánh!</string>
@@ -107,4 +107,15 @@
     <string name="default_font">Mặc định</string>
     <string name="bread_font">Bánh mì</string>
     <string name="save">Lưu</string>
+    <string name="save_setting">Lưu thay đổi?</string>
+
+    <string name="enter_disease_area_title">Cảnh báo!</string>
+    <string name="enter_disease_area_body">Bạn đang đi vào khu vực có dịch.\nNhấn vào để xem thêm thông tin</string>
+    <string name="enter_disease_area_text">Bạn đang đi vào khu vực có dịch.</string>
+    <string name="dwell_disease_area_title">Vùng có dịch!</string>
+    <string name="dwell_disease_area_body">Bạn đang ở trong khu vực có dịch.\nNhấn vào để xem thêm thông tin</string>
+    <string name="dwell_disease_area_text">Bạn đang ở trong khu vực có dịch.</string>
+    <string name="exit_disease_area_title">Khu vực an toàn!</string>
+    <string name="exit_disease_area_body">Bạn đã ra khỏi khu vực có dịch.\nNhấn vào để xem thêm thông tin</string>
+    <string name="exit_disease_area_text">Bạn đã ra khỏi khu vực có dịch.</string>
 </resources>

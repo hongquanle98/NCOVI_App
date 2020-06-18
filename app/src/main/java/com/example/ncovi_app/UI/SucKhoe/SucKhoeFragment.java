@@ -5,11 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +12,14 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.example.ncovi_app.Adapter.ListViewAdapter;
+import com.example.ncovi_app.DB.HealthHistoryDB;
 import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.Model.HealthHistory;
-import com.example.ncovi_app.DB.HealthHistoryDB;
 import com.example.ncovi_app.R;
 import com.example.ncovi_app.UI.Home.HomeFragment;
 import com.example.ncovi_app.databinding.FragmentSucKhoeBinding;
@@ -143,7 +142,7 @@ public class SucKhoeFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false);
                 builder.setMessage(getString(R.string.delete_history))
-                        .setPositiveButton(getString(R.string.delete_history_no), new DialogInterface.OnClickListener() {
+                        .setPositiveButton(getString(R.string.delete_history_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 healthHistories.get(position).setDate(dateFormat(healthHistories.get(position).getDate()));
                                 healthHistoryDB.delete(healthHistories.get(position));
@@ -151,7 +150,7 @@ public class SucKhoeFragment extends Fragment {
                                 Toast.makeText(getActivity(), getString(R.string.delete_history_result), Toast.LENGTH_LONG).show();
                             }
                         })
-                        .setNegativeButton(getString(R.string.delete_history_yes), new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.delete_history_no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog
                                 dialog.dismiss();

@@ -1,20 +1,20 @@
 package com.example.ncovi_app.UI.Setting;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.core.content.res.ResourcesCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.example.ncovi_app.FontChangeCrawler;
 import com.example.ncovi_app.R;
@@ -69,20 +69,36 @@ public class SettingFragment extends Fragment {
         binding.btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(binding.rdbEn.isChecked()){
-                    onChangeLanguage(getActivity(), new Locale("en", "US"));
-                }
-                if(binding.rdbVi.isChecked()){
-                    onChangeLanguage(getActivity(), new Locale("vi", "VN"));
-                }
-                if(binding.rdbMD.isChecked()){
-                    onChangeFont(R.font.default_font);
-                }
-                if(binding.rdbBM.isChecked()){
-                    onChangeFont(R.font.banh_mi_font);
-                }
-                Intent refresh = new Intent(getActivity(), SplashActivity.class);
-                startActivity(refresh);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(false);
+                builder.setMessage(getString(R.string.save_setting))
+                        .setPositiveButton(getString(R.string.delete_history_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                if(binding.rdbEn.isChecked()){
+                                    onChangeLanguage(getActivity(), new Locale("en", "US"));
+                                }
+                                if(binding.rdbVi.isChecked()){
+                                    onChangeLanguage(getActivity(), new Locale("vi", "VN"));
+                                }
+                                if(binding.rdbMD.isChecked()){
+                                    onChangeFont(R.font.default_font);
+                                }
+                                if(binding.rdbBM.isChecked()){
+                                    onChangeFont(R.font.banh_mi_font);
+                                }
+                                Intent refresh = new Intent(getActivity(), SplashActivity.class);
+                                startActivity(refresh);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.delete_history_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                                dialog.dismiss();
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }
